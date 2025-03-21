@@ -8,6 +8,9 @@ import * as Joi from 'joi';
 import { ConfigEnum } from 'enum/configEnum';
 
 import { User } from './user/user.entity';
+import { Profile } from './user/profile.entity';
+import { Logs } from './logs/logs.entity';
+import { Roles } from './roles/roles.entity';
 
 const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 console.log(envFilePath, 'pths');
@@ -55,7 +58,7 @@ console.log(envFilePath, 'pths');
           username: configService.get(ConfigEnum.DB_USERNAME),
           password: configService.get(ConfigEnum.DB_PASSWORD),
           database: configService.get(ConfigEnum.DB_DATABASE),
-          entities: [User],
+          entities: [User, Profile, Roles, Logs],
           synchronize: configService.get(ConfigEnum.DB_SYNC),
           logging: ['error'],
         } as TypeOrmModuleOptions;
