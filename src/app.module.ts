@@ -11,6 +11,7 @@ import { User } from './user/user.entity';
 import { Profile } from './user/profile.entity';
 import { Logs } from './logs/logs.entity';
 import { Roles } from './roles/roles.entity';
+import { UserModule } from './user/user.module';
 
 const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 console.log(envFilePath, 'pths');
@@ -64,6 +65,8 @@ console.log(envFilePath, 'pths');
         } as TypeOrmModuleOptions;
       },
     }),
+
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
