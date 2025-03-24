@@ -32,7 +32,8 @@ export class UserController {
   }
 
   @Get('/profile')
-  getUserProfile(): any {
-    return this.userService.fineProfile('2');
+  getUserProfile(id: string): any {
+    console.log(id, '333');
+    return this.userService.fineProfile('1');
   }
 }
