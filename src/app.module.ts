@@ -8,7 +8,7 @@ import * as Joi from 'joi';
 import { ConfigEnum } from 'enum/configEnum';
 
 import { User } from './user/user.entity';
-import { Profile } from './user/profile.entity';
+import { Profile } from './profile/profile.entity';
 import { Logs } from './logs/logs.entity';
 import { Roles } from './roles/roles.entity';
 import { UserModule } from './user/user.module';
