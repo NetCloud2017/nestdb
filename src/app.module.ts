@@ -12,6 +12,7 @@ import { Profile } from './profile/profile.entity';
 import { Logs } from './logs/logs.entity';
 import { Roles } from './roles/roles.entity';
 import { UserModule } from './user/user.module';
+import { LogsModule } from './logs/logs.module';
 
 const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 console.log(envFilePath, 'pths');
@@ -67,6 +68,7 @@ console.log(envFilePath, 'pths');
     }),
 
     UserModule,
+    LogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
