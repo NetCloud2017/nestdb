@@ -62,7 +62,7 @@ console.log(envFilePath, 'pths');
           database: configService.get(ConfigEnum.DB_DATABASE),
           entities: [User, Profile, Roles, Logs],
           synchronize: configService.get(ConfigEnum.DB_SYNC),
-          logging: process.env.NODE_ENV === 'development', //['error'],
+          // logging: false, // process.env.NODE_ENV === 'development', //['error'],
         } as TypeOrmModuleOptions;
       },
     }),

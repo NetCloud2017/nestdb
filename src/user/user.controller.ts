@@ -1,14 +1,16 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Logger, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
 import { User } from './user.entity';
 
 @Controller('user')
 export class UserController {
+  private logger = new Logger(UserController.name);
   constructor(
     private userService: UserService,
     private configService: ConfigService,
   ) {}
+
   @Get()
   getUsers(): any {
     return this.userService.findAll();
@@ -33,7 +35,7 @@ export class UserController {
 
   @Get('/profile')
   getUserProfile(id: string): any {
-    console.log(id, '333');
+    this.logger.log('user controller logger logs');
     return this.userService.fineProfile('1');
   }
 }
