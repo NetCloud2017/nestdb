@@ -49,16 +49,19 @@ async function bootstrap() {
       }),
     ],
   });
+
+  const logger = WinstonModule.createLogger({
+    instance,
+  });
+
   const app = await NestFactory.create(AppModule, {
     // 关闭全局日志
     // logger: false,
     // logger: ['error', 'warn'],
     // bufferLogs: true,
-    logger: WinstonModule.createLogger({
-      instance,
-    }),
+    logger: logger,
   });
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter(logger));
   app.setGlobalPrefix('api/v1');
   await app.listen(process.env.PORT ?? 3000);
 
