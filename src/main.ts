@@ -5,6 +5,7 @@ import 'winston-daily-rotate-file';
 
 import * as winston from 'winston';
 import { utilities, WinstonModule } from 'nest-winston';
+import { HttpExceptionFilter } from './filters/http-exception-filter';
 
 async function bootstrap() {
   // const logger = new Logger();
@@ -57,6 +58,7 @@ async function bootstrap() {
       instance,
     }),
   });
+  app.useGlobalFilters(new HttpExceptionFilter());
   app.setGlobalPrefix('api/v1');
   await app.listen(process.env.PORT ?? 3000);
 
