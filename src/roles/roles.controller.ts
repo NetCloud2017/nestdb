@@ -1,4 +1,13 @@
-import { Controller, Get, Inject, Logger, LoggerService } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Logger,
+  LoggerService,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 @Controller('roles')
 export class RolesController {
@@ -7,6 +16,15 @@ export class RolesController {
   }
   @Get('/userRoles')
   findUserRoles(id: string) {
+    // 处理报错 过滤器
+    const user = { isAdmin: false };
+    if (!user.isAdmin) {
+      throw new UnauthorizedException('当前用户没有权限');
+      // throw new HttpException(
+      //   'you is not admin forbidden to access getAllUsers',
+      //   HttpStatus.FORBIDDEN,
+      // );
+    }
     this.logger.log('log find user roles');
     this.logger.warn('warn find user roles');
     this.logger.debug('debug find user roles');
