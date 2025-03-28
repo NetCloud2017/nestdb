@@ -23,6 +23,7 @@ const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 
 console.log(envFilePath, 'pths');
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -121,5 +122,6 @@ console.log(envFilePath, 'pths');
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
+  exports: [Logger],
 })
 export class AppModule {}
