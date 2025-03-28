@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
@@ -13,12 +13,16 @@ import { Logs } from './logs/logs.entity';
 import { Roles } from './roles/roles.entity';
 import { UserModule } from './user/user.module';
 import { LogsModule } from './logs/logs.module';
+import { RolesModule } from './roles/roles.module';
+
+import { Logger } from '@nestjs/common';
 
 import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
 const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 
 console.log(envFilePath, 'pths');
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -113,8 +117,9 @@ console.log(envFilePath, 'pths');
     }),
     UserModule,
     LogsModule,
+    RolesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
 export class AppModule {}
