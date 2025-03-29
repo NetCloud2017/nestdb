@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import 'winston-daily-rotate-file';
@@ -6,6 +6,7 @@ import 'winston-daily-rotate-file';
 import * as winston from 'winston';
 import { utilities, WinstonModule } from 'nest-winston';
 import { HttpExceptionFilter } from './filters/http-exception-filter';
+import { AllExceptionFilter } from './filters/all-exception-filter';
 
 async function bootstrap() {
   // const logger = new Logger();
@@ -59,9 +60,13 @@ async function bootstrap() {
     // logger: false,
     // logger: ['error', 'warn'],
     // bufferLogs: true,
-    logger: logger,
+    logger,
   });
-  app.useGlobalFilters(new HttpExceptionFilter(logger));
+
+  // 全局捕获只能有一个。
+  const httpAdapter = app.get(HttpAdapterHost);
+
+  app.useGlobalFilters(new AllExceptionFilter(logger, httpAdapter));
   app.setGlobalPrefix('api/v1');
   await app.listen(process.env.PORT ?? 3000);
 
