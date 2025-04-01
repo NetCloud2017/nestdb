@@ -1,8 +1,9 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Inject, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
 import { User } from './user.entity';
 import { Logger } from 'nestjs-pino';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 @Controller('user')
 export class UserController {
@@ -10,6 +11,7 @@ export class UserController {
   constructor(
     private userService: UserService,
     private configService: ConfigService,
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
     private logger: Logger,
   ) {
     this.logger.log('UserController init');

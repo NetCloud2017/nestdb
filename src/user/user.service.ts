@@ -9,6 +9,9 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepostory: Repository<User>,
+
+    @InjectRepository(Logs)
+    private readonly logsRepostory: Repository<Logs>,
   ) {}
 
   findAll() {
@@ -39,5 +42,22 @@ export class UserService {
         profile: true,
       },
     });
+  }
+
+  findOne(id: string) {
+    return this.userRepostory.findOne({
+      where: { id },
+    });
+  }
+  async findUserLogs(id: string) {
+    const user = await this.findOne(id);
+    // return this.logsRepostory.findOne({
+    //   where: {
+    //     user,
+    //   },
+    //   relations: {
+    //     user: true,
+    //   },
+    // });
   }
 }
