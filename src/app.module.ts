@@ -1,16 +1,10 @@
 import { Global, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 import * as Joi from 'joi';
-import { ConfigEnum } from 'enum/configEnum';
-
-import { User } from './user/user.entity';
-import { Profile } from './profile/profile.entity';
-import { Logs } from './logs/logs.entity';
-import { Roles } from './roles/roles.entity';
 import { UserModule } from './user/user.module';
 import { LogsModule } from './logs/logs.module';
 import { RolesModule } from './roles/roles.module';
@@ -19,6 +13,8 @@ import { Logger } from '@nestjs/common';
 
 import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
+import ormConfig from '../ormconfig';
+
 const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 
 console.log(envFilePath, 'pths');
@@ -45,36 +41,7 @@ console.log(envFilePath, 'pths');
       }),
     }),
 
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   host: 'localhost',
-    //   port: 8088,
-    //   username: 'postgres',
-    //   password: '123',
-    //   database: 'postgresdb',
-    //   entities: [],
-    //   synchronize: true,
-    //   logging: ['error'],
-    // }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        console.log(configService.get(ConfigEnum.DB_DATABASE), 'database');
-        return {
-          type: configService.get(ConfigEnum.DB_TYPE),
-          host: configService.get(ConfigEnum.DB_HOST),
-          port: configService.get(ConfigEnum.DB_PORT),
-          username: configService.get(ConfigEnum.DB_USERNAME),
-          password: configService.get(ConfigEnum.DB_PASSWORD),
-          database: configService.get(ConfigEnum.DB_DATABASE),
-          entities: [User, Profile, Roles, Logs],
-          synchronize: configService.get(ConfigEnum.DB_SYNC),
-          // logging: false, // process.env.NODE_ENV === 'development', //['error'],
-        } as TypeOrmModuleOptions;
-      },
-    }),
-
+    TypeOrmModule.forRoot(ormConfig),
     LoggerModule.forRoot({
       pinoHttp: {
         transport: {
