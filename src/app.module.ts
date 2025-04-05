@@ -6,14 +6,14 @@ import { ConfigModule } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 import * as Joi from 'joi';
 import { UserModule } from './user/user.module';
-import { LogsModule } from './logs/logs.module';
+import { LogsModule } from './logsModule/logs.module';
 import { RolesModule } from './roles/roles.module';
 
 import { Logger } from '@nestjs/common';
 
 import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
-import ormConfig from '../ormconfig';
+import { connectionParams } from '../ormconfig';
 
 const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 
@@ -30,7 +30,10 @@ console.log(envFilePath, 'pths');
         NODE_ENV: Joi.string()
           .valid('development', 'production')
           .default('development'),
-        DB_HOST: Joi.string().ip(),
+        DB_HOST: Joi.alternatives().try(
+          Joi.string().ip(),
+          Joi.string().domain(),
+        ),
         DB_URL: Joi.string().domain(),
         DB_PORT: Joi.number().default(8088),
         DB_TYPE: Joi.string().valid('mysql', 'postgres'),
@@ -38,10 +41,12 @@ console.log(envFilePath, 'pths');
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_SYNC: Joi.boolean().default(false),
+        LOG_ON: Joi.boolean(),
+        LOG_LEVEL: Joi.string(),
       }),
     }),
 
-    TypeOrmModule.forRoot(ormConfig),
+    TypeOrmModule.forRoot(connectionParams),
     LoggerModule.forRoot({
       pinoHttp: {
         transport: {

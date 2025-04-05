@@ -1,4 +1,4 @@
-import { Logs } from '../logs/logs.entity';
+import { Logs } from '../logsModule/logs.entity';
 import { Roles } from '../roles/roles.entity';
 import {
   Column,

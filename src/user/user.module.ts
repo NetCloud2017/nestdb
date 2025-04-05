@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { User } from './user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Logs } from '../logs/logs.entity';
+import { Logs } from '../logsModule/logs.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Logs])],
